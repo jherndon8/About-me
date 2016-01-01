@@ -10,5 +10,37 @@ h2 {
     text-align: center
 }
 p {
+    text-align : center;
+    font-weight: bold
+}
+#BodyDiv {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    background-color: #EEEEEE
+}
+.Heading {
+    float:left;
+    width:32%;
+    display:block;
+    border: 4px solid black;
+    background-color: #0011FF;
+    color : #FFFFFF;
     text-align : center
+}
+.SubHeadingM {
+    display: none
+}
+.SubHeadingP {
+    display: none
+}
+.SubHeadingO {
+    display: none
+}
+a:visited {
+    color: white
+}
+a {
+    color: white
 }
