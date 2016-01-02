@@ -1,0 +1,43 @@
+#grid {
+    margin: auto;
+    width: 200px;
+    border: 3px solid #73AD21;
+    padding: 10px
+}
+
+.cell {
+    height: 20px;
+    width: 20px;
+    background-color: #999999;
+    border: 1px solid black;
+    display: table-cell;
+    font-size: 12;
+    text-align: center
+}
+
+.row {
+    display: block
+}
+
+.clicked {
+    background-color: #DDDDDD
+}
+
+.mine {
+}
+
+.mark {
+    background-color: #FF0000
+}
+
+h1 {
+    text-align: center
+}
+
+h2 {
+    text-align: center
+}
+
+p {
+    text-align: center
+}
