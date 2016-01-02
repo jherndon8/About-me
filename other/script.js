@@ -18,7 +18,7 @@ var difficulties = {
 var colors = ["transparent", "blue", "green", "red", "violet", "magenta", "cyan", "black", "grey"];
 var difficulty = difficulties.beginner;
 var grid = document.getElementById("grid");
-var clickedCount = 0;
+var clickedCount;
 var gameOverFlag = false;
 var postGame = document.getElementById("postGame");
 var buttons = document.getElementsByTagName("Button");
@@ -151,6 +151,7 @@ function hardResetBoard() {
         }
         grid.appendChild(row);
     }
+    clickedCount = 0;
 }
 
 function gameOver(won) {
