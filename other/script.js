@@ -89,7 +89,8 @@ function calculateAdjacencies() {
 
 clickCell = function(event) {
     if (postGame.innerHTML != ""
-            || event.srcElement.classList.contains("clicked")) {return;}
+            || event.srcElement.classList.contains("clicked")
+            || event.srcElement.classList.contains("mark")) {return;}
     var y = event.srcElement.row;
     var x = event.srcElement.col;
     if (isMine(y, x)) {
@@ -156,6 +157,10 @@ function hardResetBoard() {
 
 function gameOver(won) {
     if (postGame.innerHTML != "") return;
+    var mines = document.getElementsByClassName("mine");
+    for (var a = 0; a < mines.length; a++) {
+        mines[a].style.backgroundColor = "#AA0000";
+    }
     if (won) {
         postGame.innerHTML = "Congratulations, you won!"
     } else {
