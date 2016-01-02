@@ -15,12 +15,25 @@ var difficulties = {
         mines: 99
     }
 }
-
-var difficulty = difficulties.medium;
+var colors = ["transparent", "blue", "green", "red", "violet", "magenta", "cyan", "black", "grey"];
+var difficulty = difficulties.beginner;
 var grid = document.getElementById("grid");
+var clickedCount = 0;
+var gameOverFlag = false;
+var postGame = document.getElementById("postGame");
+var buttons = document.getElementsByTagName("Button");
+for (var b = 0; b < buttons.length; b++) {
+    buttons[b].onclick = function(event) {
+        difficulty = difficulties[event.srcElement.id];
+        hardResetBoard();
+    };
+}
+
 
 function cell(y, x) {
-    var a = grid;
+    if (y < 0 || y >= difficulty.height || x < 0 || x >= difficulty.width) {
+        return null;
+    }
     return grid.children[y].children[x];
 }
 
@@ -29,9 +42,10 @@ addMines = function(event) {
     x = event.srcElement.col;
     //console.log(event);
     console.log("First click at " + y + "th row and " + x + "th column");
-    for (var y = 0; y < difficulty.height; y++) {
-        for (var x = 0; x < difficulty.width; x++) {
-            cell(y, x).onclick = function(evnt) {clickCell(evnt)};
+    for (var i = 0; i < difficulty.height; i++) {
+        for (var j = 0; j < difficulty.width; j++) {
+            cell(i, j).onclick = function(evnt) {clickCell(evnt)};
+            cell(i, j).oncontextmenu = function(evnt) {return rightClickCell(evnt)};
         }
     }
     for (var mines = 0; mines < difficulty.mines;) {
@@ -41,19 +55,83 @@ addMines = function(event) {
             && !cell(ygen, xgen).classList.contains("mine")) {
             cell(ygen, xgen).classList.add("mine");
             mines++;
+            //Good for debugging
+            //cell(ygen, xgen).style.backgroundColor = "#DD0000";
+        }
+    }
+    calculateAdjacencies();
+    clickCell(event);
+}
+
+function isMine(y, x) {
+    return cell(y, x).classList.contains("mine");
+}
+
+function calculateAdjacencies() {
+    for (var y = 0; y < difficulty.height; y++) {
+        for (var x = 0; x < difficulty.width; x++) {
+            var count = 0;
+            var c = cell(y, x);
+            for (var yy = -1; yy <= 1; yy++) {
+                for (var xx = -1; xx <= 1; xx++) {
+                    var cur = cell(y+yy, x+xx);
+                    if (cur != null && cur.classList.contains("mine")) {
+                        count++;
+                    }
+                }
+            }
+            c.adjCount = count;
+            c.innerHTML = count;
+            c.style.color = "transparent";
         }
     }
 }
 
 clickCell = function(event) {
-    y = event.srcElement.row;
-    x = event.srcElement.col;
+    if (postGame.innerHTML != ""
+            || event.srcElement.classList.contains("clicked")) {return;}
+    var y = event.srcElement.row;
+    var x = event.srcElement.col;
+    if (isMine(y, x)) {
+        gameOver(false);
+        return;
+    }
+    clickedCount++;
+    cell(y, x).classList.add("clicked");
     console.log("Clicking cell at row " + y + ", column " + x);
-    //TODO
+    cell(y, x).style.color = colors[cell(y, x).adjCount];
+    if (cell(y, x).adjCount === 0) {
+        for (var yy = -1; yy <= 1; yy++) {
+            for (var xx = -1; xx <= 1; xx++) {
+                if ((xx != 0 || yy != 0) && cell(yy+y, xx+x) != null) {
+                    cell(yy+y, xx+x).click();
+                }
+            }
+        }
+    }
+    if (clickedCount == difficulty.height * difficulty.width - difficulty.mines) {
+        gameOver(true);
+    }
+}
+
+rightClickCell = function(event) {
+    if (postGame.innerHTML != "") return;
+    var y = event.srcElement.row;
+    var x = event.srcElement.col;
+    console.log("Right Clicking cell at row " + y + ", column " + x);
+    if (!cell(y, x).classList.contains("clicked")) {
+        if (cell(y, x).classList.contains("mark")) {
+            cell(y, x).classList.remove("mark");
+        } else {
+            cell(y, x).classList.add("mark");
+        }
+    }
+    return false;
 }
 
 function hardResetBoard() {
-    grid.innerHTML = "" //Non-standard, but fast and well supported?
+    postGame.innerHTML = "";
+    grid.innerHTML = ""; //Non-standard, but fast and well supported?
     grid.style.width = 20 * difficulty.width;
     grid.style.height = 20 * difficulty.height;
     for (var y = 0; y < difficulty.height; y++) {
@@ -75,5 +153,17 @@ function hardResetBoard() {
     }
 }
 
+function gameOver(won) {
+    if (postGame.innerHTML != "") return;
+    if (won) {
+        postGame.innerHTML = "Congratulations, you won!"
+    } else {
+        postGame.innerHTML = "Sorry, you lost"
+    }
+}
+
+function win() {
+    console.log("You won");
+}
 
 hardResetBoard();
