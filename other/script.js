@@ -46,6 +46,7 @@ addMines = function(event) {
         for (var j = 0; j < difficulty.width; j++) {
             cell(i, j).onclick = function(evnt) {clickCell(evnt)};
             cell(i, j).oncontextmenu = function(evnt) {return rightClickCell(evnt)};
+            cell(i, j).ondblclick = function(evnt) {dblclickCell(evnt)};
         }
     }
     for (var mines = 0; mines < difficulty.mines;) {
@@ -128,6 +129,36 @@ rightClickCell = function(event) {
         }
     }
     return false;
+}
+
+dblclickCell = function(event) {
+    var clicked = event.srcElement;
+    if (!clicked.classList.contains("clicked")) {
+        return;
+    }
+    var y = event.srcElement.row;
+    var x = event.srcElement.col;
+    var count = 0;
+    for (var yy = -1; yy <= 1; yy++) {
+        for (var xx = -1; xx <= 1; xx++) {
+            var c = cell(y + yy, x + xx);
+            if (c != null && c.classList.contains("mark")) {
+                count++;
+            }
+        }
+    }
+    if (count != clicked.innerHTML) {
+        return;
+    }
+    console.log("double clicking " + y + ", " + x);
+    for (var yy = -1; yy <= 1; yy++) {
+        for (var xx = -1; xx <= 1; xx++) {
+            var c = cell(y + yy, x + xx);
+            if (c != null) {
+                c.click();
+            }
+        }
+    }
 }
 
 function hardResetBoard() {
