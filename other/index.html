@@ -6,6 +6,29 @@
 <body>
     <h1>More stuff</h1>
     <h2>Minesweeper game</h2>
+    <h3>Instructions</h3>
+    <ul>
+        <li>
+            Click a square to dig. If there is a mine under that square, you lose.
+            If a number is displayed, that tells you how many mines are next to it
+            (including diagonals).
+        </li>
+        <li>
+            Note: do not worry about the first move. The mines are set after the
+            first dig so you should always have a nice starting point.
+        </li>
+        <li>
+            Right-click a square to mark it as a mine. You do not have to mark every
+            mine to win; you only need to dig all the non-mines. Right-clicking
+            before you dig your first square is disabled.
+        </li>
+        <li>
+            If there is a number with the correct number of mines marked around it,
+            double-clicking the number to dig on all the squares that are not marked
+            around it (This has the same functionality as right+left clicking in the
+            original game).
+        </li>
+    </ul>
     <div id="grid"></div>
     <div id="postGame"></div>
     <div id="buttons">
@@ -13,6 +36,7 @@
         <button id="beginner">beginner</button>
         <button id="medium">medium</button>
         <button id="expert">expert</button>
+    </div>
     <h2 id="about">About this website</h2>
     <p>Everything on this github pages was produced using HTML, CSS, and JavaScript.
         To learn these skills, I used <a href = "http://Codecademy.com">Codecademy</a> and <a href = "http://Lynda.com">Lynda.com</a>.
