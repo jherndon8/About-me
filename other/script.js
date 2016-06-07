@@ -174,7 +174,7 @@ function hardResetBoard() {
         for (var x = 0; x < difficulty.width; x++) {
             var classAtt2 = document.createAttribute("class");
             var cur = document.createElement("div");
-            classAtt2.value = "cell";
+            classAtt2.value = "cell unselectable";
             cur.setAttributeNode(classAtt2);
             cur.row = y;
             cur.col = x;
